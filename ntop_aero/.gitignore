@@ -1,0 +1,18 @@
+# local settings, generated geometry, run output and report builds stay out of git
+local_paths.json
+geo/
+results/
+figures/
+media/
+report/
+tmp/
+pde_gen/
+__pycache__/
+*.npz
+*.npy
+*.ini
+*.log
+tmp_log.txt
+whale_config.json
+inspect_geo.py
+diag_*.py
