@@ -20,6 +20,7 @@ __include utils.float_array;
 __include utils.dense_grid;
 __include utils.fcpw_geometric_queries;
 __include utils.sdf_grid_geometric_queries;
+__include utils.implicit_geometric_queries; // ntop_aero: walls from an implicit
 __include point_estimation.walk_on_spheres;
 __include point_estimation.walk_on_stars;
 __include variance_reduction.boundary_samplers;
@@ -100,6 +101,7 @@ typedef EmptyAbsorbingBoundaryGeometricQueries<WOSX_PROBLEM_DIMENSION> Absorbing
 #define WOSX_EMPTY_REFLECTING_BOUNDARY 0
 #define WOSX_MESH_BASED_REFLECTING_NEUMANN_BOUNDARY 1
 #define WOSX_MESH_BASED_REFLECTING_ROBIN_BOUNDARY 2
+#define WOSX_IMPLICIT_REFLECTING_BOUNDARY 3
 
 #ifndef WOSX_REFLECTING_BOUNDARY_TYPE
 #define WOSX_REFLECTING_BOUNDARY_TYPE WOSX_EMPTY_REFLECTING_BOUNDARY
@@ -126,6 +128,9 @@ typedef ReflectanceBvh<ReflectanceTriangle<RobinTriangleBound>, RobinBvhNodeBoun
 #endif
 
 typedef FcpwReflectingBoundaryGeometricQueries<ReflectingBoundaryAccelerationStructure, WOSX_PROBLEM_DIMENSION> ReflectingBoundaryGeometricQueries;
+
+#elif WOSX_REFLECTING_BOUNDARY_TYPE == WOSX_IMPLICIT_REFLECTING_BOUNDARY
+typedef ImplicitReflectingBoundaryGeometricQueries<ImplicitBody3D, WOSX_PROBLEM_DIMENSION> ReflectingBoundaryGeometricQueries;
 
 #else
 typedef EmptyReflectingBoundaryGeometricQueries<WOSX_PROBLEM_DIMENSION> ReflectingBoundaryGeometricQueries;
@@ -180,6 +185,7 @@ public typedef EmptyDomainSampler<WOSX_PROBLEM_DIMENSION> DomainSamplerType;
 #define WOSX_EMPTY_BOUNDARY_SAMPLER 0
 #define WOSX_UNIFORM_LINE_SEGMENT_BOUNDARY_SAMPLER 1
 #define WOSX_UNIFORM_TRIANGLE_BOUNDARY_SAMPLER 2
+#define WOSX_POINT_LIST_BOUNDARY_SAMPLER 3
 
 #ifndef WOSX_ABSORBING_BOUNDARY_SAMPLER_TYPE
 #define WOSX_ABSORBING_BOUNDARY_SAMPLER_TYPE WOSX_EMPTY_BOUNDARY_SAMPLER
@@ -205,6 +211,9 @@ public typedef UniformLineSegmentBoundarySampler<GeometricQueriesType> Reflectin
 
 #elif WOSX_REFLECTING_BOUNDARY_SAMPLER_TYPE == WOSX_UNIFORM_TRIANGLE_BOUNDARY_SAMPLER
 public typedef UniformTriangleBoundarySampler<GeometricQueriesType> ReflectingBoundarySamplerType;
+
+#elif WOSX_REFLECTING_BOUNDARY_SAMPLER_TYPE == WOSX_POINT_LIST_BOUNDARY_SAMPLER
+public typedef PointListBoundarySampler<WOSX_PROBLEM_DIMENSION> ReflectingBoundarySamplerType;
 
 #else
 public typedef EmptyBoundarySampler<WOSX_PROBLEM_DIMENSION> ReflectingBoundarySamplerType;

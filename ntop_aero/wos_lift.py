@@ -281,7 +281,8 @@ class Timer:
 
 class WosLift:
     def __init__(self, key='V03', mesh='geo/V03_h20.npz', channels=16, ns=None, xi=(0.25,), w=(1.0,), core_m=0.05,
-                 centre=None, spacing='uniform', backend='cuda', print_logs=False, mach=0.0, kernel='alg'):
+                 centre=None, spacing='uniform', backend='cuda', print_logs=False, mach=0.0, kernel='alg', implicit=None,
+                 pool=1_000_000):
         import wosx
         self.wosx = wosx
         self.key, self.channels = key, channels
@@ -291,12 +292,22 @@ class WosLift:
         # 1 / beta; the circulation of the real flow is that of the stretched flow at beta * alpha, divided by beta.
         self.mach, self.beta = float(mach), math.sqrt(1.0 - mach * mach)
         self.pf = Stretched(planform(key), self.beta)
-        d = np.load(HERE / mesh)
-        self.mesh_meta = json.loads(str(d['meta']))
-        self.V, self.F = d['vertices'].astype(np.float64), d['faces'].astype(np.int32)
-        self.V[:, 0] /= self.beta
-        self.c = np.asarray(centre if centre is not None else bodies.centre(key), float) / np.array([self.beta, 1.0, 1.0])
-        self.R = float(np.linalg.norm(self.V - self.c, axis=1).max())
+        self.implicit = implicit
+        if implicit:                                     # wall from the implicit (grids of implicit_grid.py), no triangles
+            import implicit_wall as IW
+            self.grid = IW.Grid(HERE / implicit)
+            gm = self.grid.meta
+            assert abs(gm['beta'] - self.beta) < 1e-9, 'the grid was made for another Mach number'
+            self.mesh_meta = dict({k: v for k, v in gm.items()}, wall='implicit', file=str(implicit))
+            self.c = np.asarray(gm['centre'], float) if centre is None else np.asarray(centre, float) / np.array([self.beta, 1.0, 1.0])
+            self.R = float(np.linalg.norm(self.grid.pts - self.c, axis=1).max()) * 1.0002
+        else:
+            d = np.load(HERE / mesh)
+            self.mesh_meta = json.loads(str(d['meta']))
+            self.V, self.F = d['vertices'].astype(np.float64), d['faces'].astype(np.int32)
+            self.V[:, 0] /= self.beta
+            self.c = np.asarray(centre if centre is not None else bodies.centre(key), float) / np.array([self.beta, 1.0, 1.0])
+            self.R = float(np.linalg.norm(self.V - self.c, axis=1).max())
         self.scale = 1.0 / self.R
         self.lat = Lattice(self.pf, ns or channels - 3, xi, w, spacing=spacing)
         self.core = core_m * self.scale
@@ -307,22 +318,28 @@ class WosLift:
 
         ch = dict(dim=3, channels=channels)
         self.task = wosx.GPUTaskHandle(str(WOSX_ROOT), str(self.pde_dir), backend, **ch)
-        self.pos = wosx.Float3List(((self.V - self.c) * self.scale).astype(np.float32))
-        self.idx = wosx.Int3List(self.F)
         self.inv_point = np.zeros(3, dtype=np.float32)
         self.kelvin = wosx.Solvers.KelvinTransform(self.inv_point, **ch)
-        self.inv_pos = wosx.Float3List()
-        self.kelvin.transform_points(self.pos, self.inv_pos)
-        nf = len(self.F)
-        zero = wosx.FloatList([0.0] * nf)
-        self.rc_min, self.rc_max = wosx.FloatList(), wosx.FloatList()
-        self.kelvin.compute_robin_coefficients(self.inv_pos, self.idx, zero, zero, self.rc_min, self.rc_max)
-        self.bbox = wosx.Utils.compute_bounding_box(self.inv_pos, True, 1.0, dim=3)
-        self.T.lap('invert_mesh')
-
         absorbing = wosx.Core.GPUEmptyAbsorbingBoundaryHandler()
-        ignore = wosx.Utils.get_ignore_candidate_silhouette_callback(False)
-        self.reflecting = wosx.Utils.GPUFcpwRobinBoundaryHandler(self.inv_pos, self.idx, ignore, self.rc_min, self.rc_max, dim=3)
+        if implicit:
+            self.wall = IW.Wall(wosx, self.grid, self.c, self.scale, pool=pool)
+            self.inv_pos = self.wall.inv_pos
+            self.bbox = wosx.Utils.compute_bounding_box(self.inv_pos, True, 1.0, dim=3)
+            self.T.lap('invert_mesh')
+            self.reflecting = self.wall.handler
+        else:
+            self.pos = wosx.Float3List(((self.V - self.c) * self.scale).astype(np.float32))
+            self.idx = wosx.Int3List(self.F)
+            self.inv_pos = wosx.Float3List()
+            self.kelvin.transform_points(self.pos, self.inv_pos)
+            nf = len(self.F)
+            zero = wosx.FloatList([0.0] * nf)
+            self.rc_min, self.rc_max = wosx.FloatList(), wosx.FloatList()
+            self.kelvin.compute_robin_coefficients(self.inv_pos, self.idx, zero, zero, self.rc_min, self.rc_max)
+            self.bbox = wosx.Utils.compute_bounding_box(self.inv_pos, True, 1.0, dim=3)
+            self.T.lap('invert_mesh')
+            ignore = wosx.Utils.get_ignore_candidate_silhouette_callback(False)
+            self.reflecting = wosx.Utils.GPUFcpwRobinBoundaryHandler(self.inv_pos, self.idx, ignore, self.rc_min, self.rc_max, dim=3)
         self.absorbing = absorbing
         self.gq = wosx.Core.GPUGeometricQueries(absorbing, self.reflecting, self.bbox[0], self.bbox[1], True, dim=3)
 
@@ -342,8 +359,11 @@ class WosLift:
         self.pde = PDE()
         self.kpde = wosx.Core.GPUKelvinPDE(self.pde, self.inv_point, **ch)
         inside = wosx.Utils.get_inside_bounding_box_callback(self.bbox[0], self.bbox[1], dim=3)
-        self.sampler = wosx.Samplers.create_gpu_uniform_boundary_sampler(
-            self.gq, self.inv_pos, self.idx, self._weights(), inside, 0.0, False, dim=3)
+        if implicit:
+            self.sampler = self.wall.sampler(self.bbox)
+        else:
+            self.sampler = wosx.Samplers.create_gpu_uniform_boundary_sampler(
+                self.gq, self.inv_pos, self.idx, self._weights(), inside, 0.0, False, dim=3)
         self.task.set_geometric_queries(self.gq)
         self.task.set_reflecting_boundary_sampler(self.sampler)
         self.task.set_pde(self.kpde)

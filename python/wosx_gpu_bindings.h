@@ -63,6 +63,68 @@ struct PyGPUPDE: wosx::GPUPDE {
     }
 };
 
+// ntop_aero: trampolines so that a reflecting wall and a boundary sampler can be written in Python + Slang
+// (used for walls defined by an implicit instead of triangles)
+struct PyGPUReflectingBoundaryHandler: wosx::GPUReflectingBoundaryHandler {
+    NB_TRAMPOLINE(wosx::GPUReflectingBoundaryHandler, 5);
+
+    void allocate(wosx::GPUContext& context) override {
+        NB_OVERRIDE_PURE_NAME("allocate", allocate, context);
+    }
+
+    void setResources(const wosx::ShaderCursor& cursor, bool printLogs) const override {
+        NB_OVERRIDE_PURE_NAME("set_resources", setResources, cursor, printLogs);
+    }
+
+    std::string getReflectionType() const override {
+        NB_OVERRIDE_PURE_NAME("get_reflection_type", getReflectionType);
+    }
+
+    std::string getBackendType() const override {
+        NB_OVERRIDE_PURE_NAME("get_backend_type", getBackendType);
+    }
+
+    std::string getName() const override {
+        NB_OVERRIDE_PURE_NAME("get_name", getName);
+    }
+
+    wosx::GPUReflectingBoundaryType getBoundaryType() const override {
+        return wosx::GPUReflectingBoundaryType::ImplicitBased;
+    }
+};
+
+struct PyGPUBoundarySampler: wosx::GPUBoundarySampler {
+    NB_TRAMPOLINE(wosx::GPUBoundarySampler, 6);
+
+    void allocate(wosx::GPUContext& context) override {
+        NB_OVERRIDE_PURE_NAME("allocate", allocate, context);
+    }
+
+    void reallocate(wosx::GPUContext& context, float normalOffsetForBoundary) override {
+        NB_OVERRIDE_PURE_NAME("reallocate", reallocate, context, normalOffsetForBoundary);
+    }
+
+    void setResources(const wosx::ShaderCursor& cursor, bool printLogs) const override {
+        NB_OVERRIDE_PURE_NAME("set_resources", setResources, cursor, printLogs);
+    }
+
+    std::string getReflectionType() const override {
+        NB_OVERRIDE_PURE_NAME("get_reflection_type", getReflectionType);
+    }
+
+    float getNormalOffsetForBoundary() const override {
+        NB_OVERRIDE_PURE_NAME("get_normal_offset_for_boundary", getNormalOffsetForBoundary);
+    }
+
+    int getSampleCount(int nTotalSamples, bool boundaryNormalAlignedSamples=false) const override {
+        NB_OVERRIDE_PURE_NAME("get_sample_count", getSampleCount, nTotalSamples, boundaryNormalAlignedSamples);
+    }
+
+    wosx::GPUBoundarySamplerType getSamplerType() const override {
+        return wosx::GPUBoundarySamplerType::PointList;
+    }
+};
+
 // wrapper for GPUBuffer class
 template <typename T>
 class GPUStructuredBuffer {
@@ -210,6 +272,9 @@ inline void bindGPUNonTemplatedLibraryResources(nb::module_ m)
     nb::class_<wosx::GPUEmptyReflectingBoundaryHandler, wosx::GPUReflectingBoundaryHandler>(
         core_m, "GPUEmptyReflectingBoundaryHandler")
         .def(nb::init<>());
+    nb::class_<PyGPUReflectingBoundaryHandler, wosx::GPUReflectingBoundaryHandler>(
+        core_m, "GPUCustomReflectingBoundaryHandler") // ntop_aero: subclass in Python
+        .def(nb::init<>());
 
     nb::module_ samplers_m = m.def_submodule("Samplers", "Samplers module");
 
@@ -221,6 +286,9 @@ inline void bindGPUNonTemplatedLibraryResources(nb::module_ m)
         .def("get_sample_count", &wosx::GPUBoundarySampler::getSampleCount,
             "Returns the number of sample points to be generated on the user-specified side of the boundary.",
             "n_total_samples"_a, "boundary_normal_aligned_samples"_a=false);
+    nb::class_<PyGPUBoundarySampler, wosx::GPUBoundarySampler>(
+        samplers_m, "GPUCustomBoundarySampler") // ntop_aero: subclass in Python
+        .def(nb::init<>());
 
     nb::module_ solvers_m = m.def_submodule("Solvers", "Solvers module");
 

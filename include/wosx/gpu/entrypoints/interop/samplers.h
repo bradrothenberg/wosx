@@ -38,7 +38,8 @@ enum class GPUDomainSamplerType: int {
 enum class GPUBoundarySamplerType: int {
     Empty = 0,
     UniformLineSegment = 1,
-    UniformTriangle = 2
+    UniformTriangle = 2,
+    PointList = 3 // ntop_aero: boundary samples from a list of points (pt, normal, pdf)
 };
 
 class GPUCDFTable: public GPUShaderObject {

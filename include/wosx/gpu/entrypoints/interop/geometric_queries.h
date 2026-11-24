@@ -32,7 +32,8 @@ enum class GPUAbsorbingBoundaryType: int {
 enum class GPUReflectingBoundaryType: int {
     Empty = 0,
     MeshBasedNeumann = 1,
-    MeshBasedRobin = 2
+    MeshBasedRobin = 2,
+    ImplicitBased = 3 // ntop_aero: wall queries from an implicit (field on a grid), no triangles
 };
 
 class GPUBoundaryHandler: public GPUShaderObject {

@@ -35,13 +35,16 @@ if __name__ == '__main__':
     ap.add_argument('--core', type=float, default=0.05, help='vortex core radius, m')
     ap.add_argument('--kernel', default='alg', choices=('alg', 'exp'), help="vortex core model: 'alg' (report so far) or 'exp' (dies out fast)")
     ap.add_argument('--field-device', default=None, help="'cpu' builds the triangles on the processor")
+    ap.add_argument('--implicit', default='', help="wall from the implicit, no triangles: a grid file of implicit_grid.py, or 'auto' for geo/KEY_Mx.xx_grid.npz")
     a = ap.parse_args()
     a.key = a.key.upper()
     mesh_seconds = None
-    if not a.mesh:
+    if a.implicit == 'auto':
+        a.implicit = f'geo/{a.key}_M{a.mach:.2f}_grid.npz'
+    if not a.mesh and not a.implicit:
         a.mesh, mesh_seconds = bodies.ensure_mesh(a.key, device=a.field_device)
     t0 = time.perf_counter()
-    S = WosLift(a.key, a.mesh, a.channels, mach=a.mach, core_m=a.core, kernel=a.kernel)
+    S = WosLift(a.key, a.mesh, a.channels, mach=a.mach, core_m=a.core, kernel=a.kernel, implicit=a.implicit or None)
     init = dict(S.T.rec)
     init['wall'] = time.perf_counter() - t0
     init['field_to_triangles'] = mesh_seconds          # None: triangles were already in geo/
@@ -72,6 +75,7 @@ if __name__ == '__main__':
                CL_mean=CL.mean(0).tolist(), CL_std=CL.std(0, ddof=1).tolist(), CDi_mean=CD.mean(0).tolist(), CDi_std=CD.std(0, ddof=1).tolist(),
                seconds_per_run=float(np.mean([r['seconds'] for r in runs])),
                reference=S.ref, method='WoSX GPU boundary value caching, 16 channels, horseshoe wake + Kutta, forces from the Trefftz plane'
+               + ('; wall from the implicit on grids, no triangles' if a.implicit else '')
                + ('' if a.mach == 0 else '; Mach number by the Goethert rule (body stretched in x by 1/beta)'))
     (HERE / 'results' / f'final_{a.key}_M{a.mach:.1f}{a.tag}.json').write_text(json.dumps(out, indent=1))
     print('mean CL', np.round(CL.mean(0), 4).tolist()); print('std  CL', np.round(CL.std(0, ddof=1), 4).tolist())
