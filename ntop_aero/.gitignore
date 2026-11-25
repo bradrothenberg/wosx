@@ -16,3 +16,4 @@ tmp_log.txt
 whale_config.json
 inspect_geo.py
 diag_*.py
+shader_cache/

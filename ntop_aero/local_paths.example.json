@@ -2,5 +2,6 @@
  "study": "path/to/the/study/with/the/implicit/models",
  "study_python": "path/to/python/with/torch/and/fieldlab",
  "fonts": "path/to/a/folder/with/aeonik-*.otf",
- "logo": ""
+ "logo": "",
+ "busy_process": ""
 }

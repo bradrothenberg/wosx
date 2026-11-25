@@ -27,6 +27,7 @@
 
 #include <wosx/gpu/entrypoints/interop/solvers.h>
 #include <wosx/gpu/entrypoints/interop/library_paths.h>
+#include <wosx/gpu/utils/shader_file_cache.h>
 
 namespace wosx {
 
@@ -162,6 +163,7 @@ void GPUTaskHandle<T, DIM>::init(const std::vector<std::pair<std::string, std::s
     for (const auto& macro: userMacros_) {
         context.macros.emplace_back(macro);
     }
+    context.deviceDesc.persistentShaderCache = ShaderFileCache::fromEnvironment(); // nullptr unless WOSX_SHADER_CACHE is set
     context.initDevice(parseDeviceBackend(deviceBackend));
 
     // load the library modules

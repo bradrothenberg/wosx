@@ -68,7 +68,7 @@ def morton(x, bits=16):
 class Wall:
     """Handler and sampler for a body given as grids. c: inversion centre (m), scale: 1 / body radius."""
 
-    def __init__(self, wosx, grid, c, scale, pool=1_000_000, seed=0, kelvin=True):
+    def __init__(self, wosx, grid, c, scale, pool=1_000_000, seed=0, kelvin=True, weight=None):
         self.wosx, self.grid = wosx, grid
         m = grid.meta
         c = np.asarray(c, float)
@@ -113,7 +113,11 @@ class Wall:
         # sampler can take one entry per stratum of the list (as the mesh sampler does over its triangles).
         rng = np.random.default_rng(seed)
         order = np.argsort(morton((grid.pts - c) * scale), kind='stable')
-        cdf = np.cumsum(grid.area[order]); cdf /= cdf[-1]
+        # weight (optional, one number per wall point): draw the samples with a density proportional to it instead of
+        # uniform over the area. The mean of the weight over the area is set to 1, and the density given to WoSX
+        # carries it, so the estimate stays unbiased.
+        wgt = np.ones(len(grid.pts)) if weight is None else np.asarray(weight, float) * (grid.area.sum() / (np.asarray(weight, float) * grid.area).sum())
+        cdf = np.cumsum((grid.area * wgt)[order]); cdf /= cdf[-1]
         j = order[np.minimum(np.searchsorted(cdf, (np.arange(pool) + rng.random(pool)) / pool), len(cdf) - 1)]
         x = (grid.pts[j] - c) * scale
         n_out = -grid.nrm[j]                             # out of the flow domain, into the body
@@ -122,9 +126,9 @@ class Wall:
         if kelvin:
             y = x / r2[:, None]
             ny = n_out - 2.0 * x * ((n_out * x).sum(1) / r2)[:, None]
-            pdf = r2 * r2 / area_n
+            pdf = wgt[j] * r2 * r2 / area_n
         else:
-            y, ny, pdf = x, n_out, np.full(pool, 1.0 / area_n)
+            y, ny, pdf = x, n_out, wgt[j] / area_n
         ny /= np.linalg.norm(ny, axis=1, keepdims=True)
         self.samples = np.concatenate([y, ny, pdf[:, None]], 1).astype(np.float32)
         self.inv_pos = wosx.Float3List(self.samples[:, :3].copy())

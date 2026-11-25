@@ -20,6 +20,9 @@ from an implicit (no triangles), see below. Without that part the WoSX source is
 | `wos_surface.py`, `run_fields.py`, `sdf_walks.py` | Potential on the skin, velocity and pressure fields, streamlines. |
 | `vlm_baseline.py` | Flat vortex lattice for comparison (needs the lattice code of the study). |
 | `panel_check.py`, `panel_sections.py`, `panel_body.py` | A small CPU panel code (thick body, flat wake) as an independent check, with its own checks: sphere, 2-D section, cambered section. |
+| `run_variants.py`, `speed_study.py`, `time_panel.py`, `strips_test.py` | Speed. `run_variants.py` times one cold command per body for four presets (below). `speed_study.py` compares settings on one body. `time_panel.py` times the panel code the same way. `strips_test.py` changes the number of wake strips. |
+| `compare_methods.py` | Lift slope, lift at zero angle and wake drag factor of the lattice, the panel code and WoSX against the CFD of a separate study, with one definition for every method. |
+| `denoise_test.py`, `denoise_select.py`, `denoise_maps.py` | De-noising of the velocity next to the skin with a small neural network trained on the noisy points of one run. A second, independent run chooses the network size. Needs torch. |
 
 ## The wall from an implicit: changes to WoSX
 
@@ -48,6 +51,38 @@ python check_sphere_implicit.py                                # sphere with the
 python run_final.py --key W12T12 --mach 0 --implicit auto --cache 240000 --walks 10 --repeat 2 --tag _c240i
 ```
 
+## Speed: a shader cache and four presets
+
+One more change to the WoSX source makes a run start faster:
+
+| File | Change |
+|---|---|
+| `include/wosx/gpu/utils/shader_file_cache.h` (new) | A cache on disk for the compiled shaders. |
+| `include/wosx/gpu/entrypoints/interop/task_handle.h` | Two lines: the device gets the cache. |
+
+Set the environment variable `WOSX_SHADER_CACHE` to a folder to use it. With the variable unset nothing changes.
+On the workstation of this study the shader set-up of a run went from 8 to 19 s down to 0.2 s.
+
+`run_final.py` has more options for speed: `--grid-shape`, `--grid-tag` and `--dist-block` build the grid of the
+field when it is missing, `--importance` starts more walks near the trailing edge, `--max-walk` cuts long walks.
+`run_variants.py` holds four presets of these:
+
+| Preset | Fine grid | Points × walks | New body, one cold command | One more run |
+|---|---|---|---|---|
+| `fast` | 512 × 256 × 128 | 15,000 × 4 | 18 to 23 s | 3 to 4 s |
+| `std` | 512 × 256 × 128 | 15,000 × 10 | 20 to 25 s | 6 to 7 s |
+| `tall` | 512 × 256 × 256 | 15,000 × 10 | 25 to 27 s | 6 to 7 s |
+| `full` | 1024 × 512 × 256 | 60,000 × 10 | 73 to 80 s | 38 to 41 s |
+
+Times are measured on ten delta bodies at Mach 0.7 on one RTX 6000 Ada (`tall`: four bodies). The lift at zero
+angle is not reliable on the `fast` and `std` grid; use `tall` or `full` for it. The lift slope is the same within
+0.5 % on all four.
+
+```
+python run_variants.py fast                    # every V.. body; python run_variants.py full V03 for one
+python compare_methods.py --wos _fast _std _tall _full --panel-grid 32 24 --tag _all
+```
+
 ## What you need
 
 - WoSX built with its Python bindings (see the top-level README), and an NVIDIA GPU.
@@ -72,9 +107,14 @@ study and need its model files.
 ## What we found
 
 - With the wake added, WoSX gives a straight lift curve and ranks swept deltas in the right order.
-- One four-minute run on one GPU scatters by 1 to 3 % in lift. A vortex lattice or the panel code gives the same
-  class of answer in seconds on one CPU, with no scatter.
-- With the corrected trailing-edge reading, the WoSX lift slope is 1 to 3 % above the panel code on the bodies tested.
+- A new body takes about 20 s on one GPU with the `fast` preset, the same as the panel code on a 32 × 24 grid. One
+  run scatters by 0.2 to 0.8 % in lift slope. A flat vortex lattice takes 0.2 s.
+- With the corrected trailing-edge reading, the WoSX lift slope is 2.6 to 3.9 % above the panel code on ten delta bodies.
+- Against the CFD of a separate study, WoSX, the panel code and the lattice rank 42 of 45 pairs of those bodies in
+  the same order. The WoSX lift slope is 8 % above that CFD, the panel code 5 %, the lattice 2 %. WoSX is not more
+  accurate than the two simple methods. There is no test data to say which level is right.
+- A small neural network takes the noise out of the pressure next to the skin better than a mean over neighbours.
+  Forces summed from that pressure are still wrong; forces come from the wake.
 - Induced drag comes from the wake. Friction and pressure drag are not in this flow model.
 
 ## Limits

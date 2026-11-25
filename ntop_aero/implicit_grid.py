@@ -71,9 +71,11 @@ def main(a):
 
     # ---------------------------------------------------------------- near box: the body plus a pad
     t = time.time()
-    cx, hx0 = centres(lo[0] / beta, hi[0] / beta, 256); cy, hy0 = centres(0.0, hi[1], 160); cz, hz0 = centres(lo[2], hi[2], 256)
+    # where the body is, on a coarse grid. A cell counts if its centre is within half a cell diagonal of the body
+    # (not only inside it), so thin parts (trailing edge, tip) between cell centres are not missed.
+    cx, hx0 = centres(lo[0] / beta, hi[0] / beta, 128); cy, hy0 = centres(0.0, hi[1], 80); cz, hz0 = centres(lo[2], hi[2], 128)
     G = np.stack(np.meshgrid(cx, cy, cz, indexing='ij'), -1).reshape(-1, 3)
-    ins = (val(G) < 0).reshape(256, 160, 256)
+    ins = (val(G) < 0.5 * float(np.linalg.norm([hx0, hy0, hz0]))).reshape(128, 80, 128)
     zin = cz[ins.any((0, 1))]; xin = cx[ins.any((1, 2))]; yin = cy[ins.any((0, 2))]
     pad = a.pad
     nlo = np.array([xin.min() - hx0 - pad, 0.0, zin.min() - hz0 - pad])
@@ -85,35 +87,54 @@ def main(a):
 
     # ---------------------------------------------------------------- the field at every cell centre
     t = time.time()
-    F = np.empty((nx, ny, nz), np.float32)
-    YZ = np.stack(np.meshgrid(Y, Z, indexing='ij'), -1).reshape(-1, 2)
-    slab = max(1, 4_000_000 // (ny * nz))
-    for i in range(0, nx, slab):
-        xs = X[i:i + slab]
-        P = np.empty((len(xs), ny * nz, 3), np.float32)
-        P[:, :, 0] = xs[:, None]; P[:, :, 1:] = YZ[None]
-        F[i:i + slab] = val(P.reshape(-1, 3)).reshape(len(xs), ny, nz)
+    # Fine values are needed only next to the wall (sign changes, and the band where the field itself is kept).
+    # So: the field at the centres of blocks of 4 x 4 x 4 cells first, then the fine cells of the blocks that can
+    # reach the band (|value| < band + lip * half the block diagonal) or that have a neighbour of the other sign.
+    # The other cells take the value of their block: they are outside the band and keep the right sign.
+    mb = 4
+    assert nx % mb == 0 and ny % mb == 0 and nz % mb == 0, 'grid shape must be a multiple of 4'
+    Xb, Yb, Zb = X.reshape(-1, mb).mean(1), Y.reshape(-1, mb).mean(1), Z.reshape(-1, mb).mean(1)
+    Fb = val(np.stack(np.meshgrid(Xb, Yb, Zb, indexing='ij'), -1).reshape(-1, 3)).reshape(len(Xb), len(Yb), len(Zb))
+    evals = Fb.size
+    if a.all_cells:
+        ref = np.ones(Fb.shape, bool)
+    else:
+        ref = np.abs(Fb) < a.band + a.lip * 0.5 * mb * float(np.linalg.norm([hx, hy, hz]))
+        sg = Fb < 0
+        for ax in range(3):
+            s0 = [slice(None)] * 3; s1 = [slice(None)] * 3
+            s0[ax] = slice(0, -1); s1[ax] = slice(1, None)
+            ch = sg[tuple(s0)] != sg[tuple(s1)]
+            ref[tuple(s0)] |= ch; ref[tuple(s1)] |= ch
+    F = np.repeat(np.repeat(np.repeat(Fb, mb, 0), mb, 1), mb, 2)
+    bi = np.argwhere(ref)
+    off = np.stack(np.meshgrid(np.arange(mb), np.arange(mb), np.arange(mb), indexing='ij'), -1).reshape(-1, 3)
+    for s in range(0, len(bi), 60_000):
+        c = (bi[s:s + 60_000, None, :] * mb + off[None]).reshape(-1, 3)
+        F[c[:, 0], c[:, 1], c[:, 2]] = val(np.stack([X[c[:, 0]], Y[c[:, 1]], Z[c[:, 2]]], 1))
+    evals += len(bi) * mb ** 3
+    refined_share = float(ref.mean())
     T['field_on_grid'] = time.time() - t
-    evals = nx * ny * nz
 
     # ---------------------------------------------------------------- wall points: sign changes between neighbours
     t = time.time()
     S = F < 0
-    pts, axes = [], []
+    A, axes = [], []
     for ax in range(3):
         sl0 = [slice(None)] * 3; sl1 = [slice(None)] * 3
         sl0[ax] = slice(0, -1); sl1[ax] = slice(1, None)
         idx = np.argwhere(S[tuple(sl0)] != S[tuple(sl1)])
-        A = np.stack([X[idx[:, 0]], Y[idx[:, 1]], Z[idx[:, 2]]], 1)
-        B = A.copy(); B[:, ax] += h[ax]
-        fa = val(A) < 0
-        for _ in range(18):                              # bisection on the field itself
-            M = 0.5 * (A + B)
-            same = (val(M) < 0) == fa
-            A = np.where(same[:, None], M, A); B = np.where(same[:, None], B, M)
-        pts.append(0.5 * (A + B)); axes.append(np.full(len(A), ax))
-        evals += 19 * len(A)
-    pts = np.concatenate(pts); axes = np.concatenate(axes)
+        A.append(np.stack([X[idx[:, 0]], Y[idx[:, 1]], Z[idx[:, 2]]], 1)); axes.append(np.full(len(idx), ax))
+    A = np.concatenate(A); axes = np.concatenate(axes)
+    B = A.copy(); B[np.arange(len(A)), axes] += h[axes]
+    fa = val(A) < 0
+    n_bis = 13                                           # bisection on the field itself: the cell edge / 8192
+    for _ in range(n_bis):
+        M = 0.5 * (A + B)
+        same = (val(M) < 0) == fa
+        A = np.where(same[:, None], M, A); B = np.where(same[:, None], B, M)
+    pts = 0.5 * (A + B)
+    evals += (n_bis + 1) * len(A)
     g = grad(pts)
     nrm = g / np.maximum(np.linalg.norm(g, axis=1, keepdims=True), 1e-30)   # out of the body, into the flow
     cell_face = np.array([hy * hz, hx * hz, hx * hy])
@@ -129,9 +150,9 @@ def main(a):
     sub = pts_all if len(pts_all) <= 3_000_000 else pts_all[rng.choice(len(pts_all), 3_000_000, replace=False)]
     tree = cKDTree(sub)
     spacing = float(max(h)) * (len(pts_all) / len(sub)) ** 0.5
-    m = 4                                                # medium grid: blocks of m cells
+    m = a.dist_block                                     # medium grid: blocks of m cells
     mx, my, mz = nx // m, ny // m, nz // m
-    assert nx % m == 0 and ny % m == 0 and nz % m == 0, 'grid shape must be a multiple of 4'
+    assert nx % m == 0 and ny % m == 0 and nz % m == 0, 'grid shape must be a multiple of the block size'
     Xm, hmx = centres(nlo[0], nhi[0], mx); Ym, hmy = centres(nlo[1], nhi[1], my); Zm, hmz = centres(nlo[2], nhi[2], mz)
     Gm = np.stack(np.meshgrid(Xm, Ym, Zm, indexing='ij'), -1).reshape(-1, 3)
     dm = tree.query(Gm, workers=-1)[0].astype(np.float32).reshape(mx, my, mz)
@@ -173,17 +194,28 @@ def main(a):
     # the far grid is coarse: a thinned set of wall points is enough, with a margin of three of its spacings
     far_pts = pts_all if len(pts_all) <= 200_000 else pts_all[rng.choice(len(pts_all), 200_000, replace=False)]
     far_spacing = float(max(h)) * (len(pts_all) / len(far_pts)) ** 0.5
-    df = cKDTree(far_pts).query(Gf, workers=-1)[0].astype(np.float32).reshape(fx, fy, fz)
+    # Distance of every far cell centre to the wall. A tree query from far away is slow (every branch of the tree is
+    # about as far as the best one), so: mark the far cells that hold wall points, take the distance transform of
+    # the marks (exact between cell centres, half a second), and ask the tree only for the cells within 3 m.
+    from scipy import ndimage
+    hf = np.array([hfx, hfy, hfz])
+    free = np.ones((fx, fy, fz), bool)
+    ijk = np.floor((pts_all - flo) / hf).astype(int)
+    ijk = ijk[((ijk >= 0) & (ijk < np.array([fx, fy, fz]))).all(1)]
+    free[ijk[:, 0], ijk[:, 1], ijk[:, 2]] = False
+    df = (ndimage.distance_transform_edt(free, sampling=hf) - 0.5 * float(np.linalg.norm(hf))).astype(np.float32)   # a wall point is within half a diagonal of its cell centre
+    close = (df < 3.0).reshape(-1)
+    df.reshape(-1)[close] = cKDTree(far_pts).query(Gf[close], workers=-1)[0].astype(np.float32)
     far_margin = float(np.linalg.norm([hfx, hfy, hfz])) + 3.0 * far_spacing
     Dfar = np.maximum(df - far_margin, 0.5 * pad).astype(np.float32)
     T['distance_far'] = time.time() - t
 
     meta = dict(variant=key, source=source, mach=a.mach, beta=beta, shape=[nx, ny, nz], cell_m=[float(q) for q in h],
                 near_lo=nlo.tolist(), near_hi=nhi.tolist(), far_shape=[fx, fy, fz], far_lo=flo.tolist(), far_hi=fhi.tolist(),
-                far_cell_m=[float(hfx), float(hfy), float(hfz)], pad_m=pad, band_m=band, kappa=kappa,
+                far_cell_m=[float(hfx), float(hfy), float(hfz)], pad_m=pad, band_m=band, kappa=kappa, dist_block=m,
                 gradient_size_in_band_p50_p90_p99_max=gstat, band_cells=int(len(ib)), band_cells_capped_by_distance=capped, margin_m=margin, far_margin_m=far_margin,
                 wall_points=int(len(pts_all)), wetted_area_m2_stretched=2 * area_half, centre=c.tolist(), radius_m=R,
-                field_evaluations=int(evals), field_nodes=int(fl.node_count(field)), device=str(fl.DEV),
+                field_evaluations=int(evals), fine_blocks_share=refined_share, field_nodes=int(fl.node_count(field)), device=str(fl.DEV),
                 seconds={k: round(v, 2) for k, v in T.items()}, seconds_total=round(time.time() - t0, 2))
     out = name_of(key, a.mach, a.tag)
     np.savez(out, near=D, far=Dfar, pts=pts_all.astype(np.float32), nrm=nrm_all.astype(np.float32),
@@ -200,5 +232,8 @@ if __name__ == '__main__':
     ap.add_argument('--far', type=float, default=3.0, help='half size of the far grid, in body radii')
     ap.add_argument('--pad', type=float, default=0.30, help='clear distance between the body and the faces of the fine grid, m')
     ap.add_argument('--band', type=float, default=0.06, help='the field itself is kept within this distance of the wall, m')
+    ap.add_argument('--dist-block', type=int, default=4, help='the distance away from the wall is taken on blocks of this many cells; smaller is tighter and slower to build')
+    ap.add_argument('--lip', type=float, default=2.0, help='largest gradient size of the field assumed when the blocks to refine are chosen')
+    ap.add_argument('--all-cells', action='store_true', help='evaluate the field at every fine cell (the slow, plain way)')
     ap.add_argument('--tag', default='')
     main(ap.parse_args())

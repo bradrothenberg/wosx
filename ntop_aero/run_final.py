@@ -10,12 +10,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import time
 
 import numpy as np
 
 import bodies
 from study_noise import D_KUTTA, kutta_edge, kutta_lsq
+from paths import STUDY_PY, other_job_running
 from wos_lift import HERE, WosLift
 
 ALPHAS = [float(a) for a in range(0, 13)]
@@ -36,18 +38,32 @@ if __name__ == '__main__':
     ap.add_argument('--kernel', default='alg', choices=('alg', 'exp'), help="vortex core model: 'alg' (report so far) or 'exp' (dies out fast)")
     ap.add_argument('--field-device', default=None, help="'cpu' builds the triangles on the processor")
     ap.add_argument('--implicit', default='', help="wall from the implicit, no triangles: a grid file of implicit_grid.py, or 'auto' for geo/KEY_Mx.xx_grid.npz")
+    ap.add_argument('--grid-shape', type=int, nargs=3, default=None, help='with --implicit auto: cells of the fine grid; the grid is built if it is not in geo/ yet')
+    ap.add_argument('--grid-tag', default='')
+    ap.add_argument('--dist-block', type=int, default=4, help='passed to implicit_grid.py when the grid is built')
+    ap.add_argument('--importance', action='store_true', help='implicit wall: start points of the walks weighted to the trailing edge')
+    ap.add_argument('--max-walk', type=int, default=10000, help='walks are cut at this number of steps')
     a = ap.parse_args()
     a.key = a.key.upper()
     mesh_seconds = None
+    grid_seconds = None
     if a.implicit == 'auto':
-        a.implicit = f'geo/{a.key}_M{a.mach:.2f}_grid.npz'
+        a.implicit = f'geo/{a.key}_M{a.mach:.2f}_grid{a.grid_tag}.npz'
+        if not (HERE / a.implicit).exists():
+            tg = time.perf_counter()
+            cmd = [STUDY_PY, str(HERE / 'implicit_grid.py'), a.key, '--mach', str(a.mach), '--tag', a.grid_tag, '--dist-block', str(a.dist_block)] + (['--shape'] + [str(q) for q in a.grid_shape] if a.grid_shape else [])
+            r = subprocess.run(cmd, capture_output=True, text=True)
+            assert r.returncode == 0, r.stderr[-2000:]
+            grid_seconds = time.perf_counter() - tg          # wall time of the whole step, with the start of that Python
     if not a.mesh and not a.implicit:
         a.mesh, mesh_seconds = bodies.ensure_mesh(a.key, device=a.field_device)
     t0 = time.perf_counter()
-    S = WosLift(a.key, a.mesh, a.channels, mach=a.mach, core_m=a.core, kernel=a.kernel, implicit=a.implicit or None)
+    S = WosLift(a.key, a.mesh, a.channels, mach=a.mach, core_m=a.core, kernel=a.kernel, implicit=a.implicit or None,
+                importance=dict(d=D_ALL[4:]) if a.importance and a.implicit else None)
     init = dict(S.T.rec)
     init['wall'] = time.perf_counter() - t0
     init['field_to_triangles'] = mesh_seconds          # None: triangles were already in geo/
+    init['field_to_grid'] = grid_seconds               # None: the grid was already in geo/
     pts = np.vstack([S.kutta_points(d / S.beta) for d in D_ALL])
     n7 = len(D_KUTTA) * S.lat.ns
     runs = []
@@ -56,8 +72,10 @@ if __name__ == '__main__':
     kdir.mkdir(exist_ok=True)
     for r in range(a.repeat):
         S.T.rec.clear(); S.T.lap('x')
+        shared = other_job_running()                     # outside the timed part: the check itself takes about half a second
+        S.T.lap('x')
         t = time.perf_counter()
-        u, g = S.solve(pts, cache=a.cache, walks=a.walks)
+        u, g = S.solve(pts, cache=a.cache, walks=a.walks, max_walk=a.max_walk)
         Vb = S.basis_velocity(pts, g)
         gx, gz = kutta_lsq(S, Vb[:n7], len(D_KUTTA))
         dt = time.perf_counter() - t
@@ -65,7 +83,7 @@ if __name__ == '__main__':
         ex, ez = kutta_edge(Vb[:n7], S.lat.ns, D_KUTTA, chord)        # second read-out of the same run: Kutta condition at the edge itself
         fe = [S.forces(ex, ez, al) for al in ALPHAS]
         np.savez_compressed(kdir / f'final_{a.key}_M{a.mach:.1f}{a.tag}_r{r}.npz', Vb=Vb.astype(np.float32), d=np.array(D_ALL), chord=chord, R=S.R, beta=S.beta)
-        runs.append(dict(seconds=dt, timing={k: v for k, v in S.T.rec.items() if k != 'x'}, gx=(gx * S.R / S.beta).tolist(), gz=(gz * S.R / S.beta).tolist(),
+        runs.append(dict(seconds=dt, gpu_shared=shared, timing={k: v for k, v in S.T.rec.items() if k != 'x'}, gx=(gx * S.R / S.beta).tolist(), gz=(gz * S.R / S.beta).tolist(),
                          CL=[p['CL'] for p in f], CDi=[p['CDi'] for p in f], e=[p['e'] for p in f], span_ccl=[p['span_ccl'] for p in f],
                          gx_edge=(ex * S.R / S.beta).tolist(), gz_edge=(ez * S.R / S.beta).tolist(), CL_edge=[p['CL'] for p in fe], CDi_edge=[p['CDi'] for p in fe]))
         print(f'run {r}: {dt:.1f} s  CL0 {f[0]["CL"]:+.4f}  CL4 {f[4]["CL"]:.4f}  CL8 {f[8]["CL"]:.4f}  CDi8 {f[8]["CDi"]:.5f}  | edge: CL0 {fe[0]["CL"]:+.4f}  CL8 {fe[8]["CL"]:.4f}', flush=True)
@@ -73,7 +91,7 @@ if __name__ == '__main__':
     out = dict(variant=a.key, mach=a.mach, beta=S.beta, mesh=S.mesh_meta, settings=vars(a), init=init, alphas_deg=ALPHAS, strips_per_side=S.lat.ns,
                span_y=S.lat.ym.tolist(), runs=runs,
                CL_mean=CL.mean(0).tolist(), CL_std=CL.std(0, ddof=1).tolist(), CDi_mean=CD.mean(0).tolist(), CDi_std=CD.std(0, ddof=1).tolist(),
-               seconds_per_run=float(np.mean([r['seconds'] for r in runs])),
+               seconds_per_run=float(np.mean([r['seconds'] for r in runs])), gpu_shared=any(r['gpu_shared'] for r in runs),
                reference=S.ref, method='WoSX GPU boundary value caching, 16 channels, horseshoe wake + Kutta, forces from the Trefftz plane'
                + ('; wall from the implicit on grids, no triangles' if a.implicit else '')
                + ('' if a.mach == 0 else '; Mach number by the Goethert rule (body stretched in x by 1/beta)'))
