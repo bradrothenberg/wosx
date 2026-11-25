@@ -28,23 +28,27 @@ The code that wrote them is on branch `ntop-aero` (commit d131cd9). This branch 
 | `known_wing.json`, `span_w12.json`, `panel_wing*.json` | Warren 12 reference wing: lift slope against section thickness, span loading. |
 | `denoise_*.json` | Error statistics of the de-noising test. The reference is the panel code. |
 | `summary.json` | Lift curve, wake drag and timing of body V03. |
+| `fields_V03.npz`, `fields2_V03.npz` | Two independent WoSX field runs on body V03 (`run_fields.py`): potential and velocity on two vertical slices (y = 0 and y = 3.4 m), one cross-flow plane behind the trailing edge (x = 13.6 m), a shell 0.06 m (2.4 in) off the surface, a coarse box around the body and the trailing-edge read-out points. Each set has its points and their signed distance to the body. |
+| `converge_V03.npz` | One vertical slice solved with increasing numbers of walks (`run_converge.py`): velocity on the slice and the trailing-edge strengths at each level. |
+| `denoise_cp.npz`, `denoise_maps.npz` | De-noising test: the 60,000 sample points of one WoSX run with raw, averaged and network pressure coefficients, and the panel-code values at 3,072 panel points. |
+| `panel_cp_V03_nc<n>.npz` | Panel-code pressure coefficient at the panel centres, for four chord-wise grid sizes. |
+| `wos_V03_*_kutta.npz` | Early trailing-edge read-outs on body V03: points, potential, gradient and velocity. |
+
+The point arrays above are in metres, in the axes of the body: x aft, y to the right, z up.
 
 Lift slope is (CL(8 deg) - CL(0 deg)) / 8 per degree. K is CDi / CL squared. Scatter is one standard deviation
 between repeat runs. Each body uses its own reference area, given in the file.
 
 ## What was removed
 
-These files are a copy of the working results with three kinds of content taken out.
+These files are a copy of the working results with two kinds of content taken out.
 
 1. The values of the CFD that the study used as its reference, and every quantity computed from them: ratios,
    differences, scores, and the drag model output (`drag_model.json`), which is fitted to that CFD. The CFD data
    belong to the study. The summary of the comparison is in the README of `ntop_aero`: against that CFD, the
    lift slope of WoSX is 8 % high, of the panel code 5 %, of the lattice 2 %, and each method orders 42 of the 45
    pairs of bodies as the CFD does.
-2. Arrays of points on or near the study bodies (surface pressure samples, field slices, panel corner points),
-   because they describe the shape of the bodies. The figure scripts that need them cannot be run from this
-   branch.
-3. Run logs, machine paths and the study's names of the bodies.
+2. Run logs, machine paths and the study's names of the bodies.
 
 The keys `cfd_on_gpu_during_cold_command` and `cfd_on_gpu_during_repeats` remain. They are flags that say whether
 another job used the same GPU during a timing; `true` means the time is an upper bound.
