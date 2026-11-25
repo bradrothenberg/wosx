@@ -1,0 +1,92 @@
+{
+ "key": "V03",
+ "mach": 0.7,
+ "grid": "geo/V03_M0.70_grid.npz",
+ "read_out": "edge, 0.16 to 1.0 m",
+ "rows": [
+  {
+   "config": "15000:4",
+   "cache": 15000,
+   "walks": 4,
+   "importance": false,
+   "max_walk": 10000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.5842389999888837,
+    "invert_mesh": 1.976035200059414,
+    "gpu_init_bvh_shaders": 1.8352350000059232,
+    "wall": 4.43177770008333
+   },
+   "runs": [
+    {
+     "seconds": 30.366100599989295,
+     "timing": {
+      "eval_points_cpu": 0.0006505000637844205,
+      "gpu_solver_setup": 11.287419399945065,
+      "gpu_boundary_samples": 0.0019795000553131104,
+      "gpu_walks": 17.732171899988316,
+      "gpu_splat": 1.3312034999253228,
+      "readback_cpu": 0.004371699993498623
+     },
+     "lin": 3.4124345920543147,
+     "cl0": -0.01669750302515316,
+     "gpu": {
+      "other_job_running": true,
+      "gpu_util_and_mem_before": "100, 19985"
+     }
+    }
+   ],
+   "lin_per_deg": 0.05955821914029732,
+   "lin_std_per_deg": null,
+   "cl0": -0.01669750302515316,
+   "cl0_std": null,
+   "seconds": 30.366100599989295,
+   "walk_seconds": 17.732171899988316,
+   "setup_seconds": 11.287419399945065,
+   "splat_seconds": 1.3312034999253228,
+   "gpu_shared": true
+  },
+  {
+   "config": "15000:4:imp",
+   "cache": 15000,
+   "walks": 4,
+   "importance": true,
+   "max_walk": 10000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.736539600067772,
+    "invert_mesh": 18.61857059993781,
+    "gpu_init_bvh_shaders": 1.900134600000456,
+    "wall": 21.255325700039975
+   },
+   "runs": [
+    {
+     "seconds": 32.49558650003746,
+     "timing": {
+      "eval_points_cpu": 0.0005118000553920865,
+      "gpu_solver_setup": 11.246616999967955,
+      "gpu_boundary_samples": 0.0019963999511674047,
+      "gpu_walks": 19.90203840006143,
+      "gpu_splat": 1.334263899945654,
+      "readback_cpu": 0.004191800020635128
+     },
+     "lin": 3.548385205888384,
+     "cl0": 0.01871823990211512,
+     "gpu": {
+      "other_job_running": true,
+      "gpu_util_and_mem_before": "100, 20786"
+     }
+    }
+   ],
+   "lin_per_deg": 0.06193100497180918,
+   "lin_std_per_deg": null,
+   "cl0": 0.01871823990211512,
+   "cl0_std": null,
+   "seconds": 32.49558650003746,
+   "walk_seconds": 19.90203840006143,
+   "setup_seconds": 11.246616999967955,
+   "splat_seconds": 1.334263899945654,
+   "gpu_shared": true
+  }
+ ]
+}

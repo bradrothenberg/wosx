@@ -1,0 +1,171 @@
+{
+ "radius_m": 5.0,
+ "grid": {
+  "variant": "sphere",
+  "source": "exact distance to a sphere",
+  "mach": 0.0,
+  "beta": 1.0,
+  "shape": [
+   320,
+   160,
+   320
+  ],
+  "cell_m": [
+   0.03375,
+   0.03375,
+   0.03375
+  ],
+  "near_lo": [
+   0.6,
+   0.0,
+   -5.25
+  ],
+  "near_hi": [
+   11.4,
+   5.4,
+   5.550000000000001
+  ],
+  "far_shape": [
+   160,
+   80,
+   160
+  ],
+  "far_lo": [
+   -9.002999999999998,
+   0.0,
+   -14.852999999999998
+  ],
+  "far_hi": [
+   21.003,
+   15.002999999999998,
+   15.152999999999999
+  ],
+  "pad_m": 0.4,
+  "kappa": 1.0,
+  "wall_points": 600000,
+  "wetted_area_m2_stretched": 314.1592653589793,
+  "centre": [
+   6.0,
+   0.0,
+   0.15
+  ],
+  "radius_m": 5.0009999999999994
+ },
+ "init_seconds": 2.5415085999993607,
+ "points_per_distance": 400,
+ "runs": [
+  {
+   "cache": 15000,
+   "walks": 10,
+   "seconds": 9.156996299978346,
+   "by_distance": [
+    {
+     "distance_over_radius": 0.01,
+     "rms_error": 15.414783542807772,
+     "median_error": 7.966137544442846,
+     "p95_error": 36.153799900047545,
+     "potential_ratio_to_exact": 0.9921888729563642
+    },
+    {
+     "distance_over_radius": 0.02,
+     "rms_error": 3.249221358333279,
+     "median_error": 2.34203365049905,
+     "p95_error": 6.0467936482123905,
+     "potential_ratio_to_exact": 0.9945893901328632
+    },
+    {
+     "distance_over_radius": 0.05,
+     "rms_error": 0.39892552495394734,
+     "median_error": 0.3086912520436867,
+     "p95_error": 0.7242391106093972,
+     "potential_ratio_to_exact": 0.9971741182088135
+    },
+    {
+     "distance_over_radius": 0.1,
+     "rms_error": 0.08100634330975685,
+     "median_error": 0.07020608429814776,
+     "p95_error": 0.13700759540011376,
+     "potential_ratio_to_exact": 0.9973776509322606
+    },
+    {
+     "distance_over_radius": 0.2,
+     "rms_error": 0.01617276233821052,
+     "median_error": 0.01409454540298722,
+     "p95_error": 0.025961805927754354,
+     "potential_ratio_to_exact": 0.9972749327604168
+    },
+    {
+     "distance_over_radius": 0.5,
+     "rms_error": 0.0021001202090727717,
+     "median_error": 0.0018815438654383346,
+     "p95_error": 0.003374870227484199,
+     "potential_ratio_to_exact": 0.997342285328533
+    },
+    {
+     "distance_over_radius": 1.0,
+     "rms_error": 0.00047519211122526786,
+     "median_error": 0.0004051658247875647,
+     "p95_error": 0.000773536401981509,
+     "potential_ratio_to_exact": 0.9973477955307375
+    }
+   ]
+  },
+  {
+   "cache": 60000,
+   "walks": 10,
+   "seconds": 23.108090199995786,
+   "by_distance": [
+    {
+     "distance_over_radius": 0.01,
+     "rms_error": 6.891297813281098,
+     "median_error": 4.765380286464723,
+     "p95_error": 12.461274495425908,
+     "potential_ratio_to_exact": 0.9982277553143417
+    },
+    {
+     "distance_over_radius": 0.02,
+     "rms_error": 1.3454365140829938,
+     "median_error": 1.053418898127147,
+     "p95_error": 2.3698269952034123,
+     "potential_ratio_to_exact": 0.9974725447165174
+    },
+    {
+     "distance_over_radius": 0.05,
+     "rms_error": 0.1617623425664024,
+     "median_error": 0.13825922370800126,
+     "p95_error": 0.2784867363799845,
+     "potential_ratio_to_exact": 1.0000523061782636
+    },
+    {
+     "distance_over_radius": 0.1,
+     "rms_error": 0.03631839202242066,
+     "median_error": 0.030460431615924044,
+     "p95_error": 0.05922336059910942,
+     "potential_ratio_to_exact": 1.0004573576906435
+    },
+    {
+     "distance_over_radius": 0.2,
+     "rms_error": 0.008299848318122017,
+     "median_error": 0.007189204806331314,
+     "p95_error": 0.013435860457666447,
+     "potential_ratio_to_exact": 1.000531903877155
+    },
+    {
+     "distance_over_radius": 0.5,
+     "rms_error": 0.0010383816977107406,
+     "median_error": 0.0008349628060742945,
+     "p95_error": 0.00188536711685706,
+     "potential_ratio_to_exact": 1.0005749765264065
+    },
+    {
+     "distance_over_radius": 1.0,
+     "rms_error": 0.0002131573839731082,
+     "median_error": 0.000150422578957625,
+     "p95_error": 0.00038708421752813683,
+     "potential_ratio_to_exact": 1.0005415837053904
+    }
+   ]
+  }
+ ],
+ "note": "error = |computed - exact| perturbation velocity as a fraction of flight speed; potential ratio = least-squares ratio of computed to exact potential"
+}

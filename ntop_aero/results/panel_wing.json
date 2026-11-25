@@ -1,0 +1,223 @@
+{
+ "planform": "Warren 12",
+ "published_per_rad": 2.743,
+ "grids": [
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.03,
+   "panels": 1582,
+   "cl_alpha": 2.834655059666801,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.662362800001574
+  },
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.06,
+   "panels": 1582,
+   "cl_alpha": 2.891326694641219,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.423733200001152
+  },
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.09,
+   "panels": 1582,
+   "cl_alpha": 2.95368220949292,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.433034300000145
+  },
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.12,
+   "panels": 1582,
+   "cl_alpha": 3.0170219406915666,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.309761000000435
+  },
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.15,
+   "panels": 1582,
+   "cl_alpha": 3.080301252127441,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.3682634999968286
+  },
+  {
+   "nc": 24,
+   "ms": 16,
+   "tc": 0.18,
+   "panels": 1582,
+   "cl_alpha": 3.1431149877118054,
+   "cl_alpha_total_jump": null,
+   "seconds": 2.3953490999992937
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.03,
+   "panels": 3134,
+   "cl_alpha": 2.8260077122426432,
+   "cl_alpha_total_jump": 2.828580369250707,
+   "seconds": 18.701896699996723
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.06,
+   "panels": 3134,
+   "cl_alpha": 2.8899315708375215,
+   "cl_alpha_total_jump": 2.895716861918903,
+   "seconds": 18.875981199998932
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.09,
+   "panels": 3134,
+   "cl_alpha": 2.956863991567242,
+   "cl_alpha_total_jump": 2.96649823915116,
+   "seconds": 19.038858899999468
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.12,
+   "panels": 3134,
+   "cl_alpha": 3.0240185953459195,
+   "cl_alpha_total_jump": 3.038159900237129,
+   "seconds": 18.58349140000064
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.15,
+   "panels": 3134,
+   "cl_alpha": 3.090819406934681,
+   "cl_alpha_total_jump": 3.1101422285131197,
+   "seconds": 18.71364950000134
+  },
+  {
+   "nc": 32,
+   "ms": 24,
+   "tc": 0.18,
+   "panels": 3134,
+   "cl_alpha": 3.157040772401475,
+   "cl_alpha_total_jump": 3.1822346917385063,
+   "seconds": 18.93512120000014
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.03,
+   "panels": 6238,
+   "cl_alpha": 2.828572791241501,
+   "cl_alpha_total_jump": null,
+   "seconds": 37.045535299999756
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.06,
+   "panels": 6238,
+   "cl_alpha": 2.8967926527506633,
+   "cl_alpha_total_jump": null,
+   "seconds": 36.04633710000053
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.09,
+   "panels": 6238,
+   "cl_alpha": 2.9668288220275474,
+   "cl_alpha_total_jump": null,
+   "seconds": 35.49692409999989
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.12,
+   "panels": 6238,
+   "cl_alpha": 3.0368850663274203,
+   "cl_alpha_total_jump": null,
+   "seconds": 35.24906900000133
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.15,
+   "panels": 6238,
+   "cl_alpha": 3.1065739946465114,
+   "cl_alpha_total_jump": null,
+   "seconds": 35.7892772999985
+  },
+  {
+   "nc": 48,
+   "ms": 32,
+   "tc": 0.18,
+   "panels": 6238,
+   "cl_alpha": 3.1757359647438883,
+   "cl_alpha_total_jump": null,
+   "seconds": 35.9047707000027
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.03,
+   "panels": 10366,
+   "cl_alpha": 2.8291682580554154,
+   "cl_alpha_total_jump": null,
+   "seconds": 103.11225840000043
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.06,
+   "panels": 10366,
+   "cl_alpha": 2.899945834648711,
+   "cl_alpha_total_jump": null,
+   "seconds": 98.98531220000223
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.09,
+   "panels": 10366,
+   "cl_alpha": 2.971851625473194,
+   "cl_alpha_total_jump": null,
+   "seconds": 95.53385020000132
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.12,
+   "panels": 10366,
+   "cl_alpha": 3.043635375677093,
+   "cl_alpha_total_jump": null,
+   "seconds": 94.5627816999986
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.15,
+   "panels": 10366,
+   "cl_alpha": 3.115026992709059,
+   "cl_alpha_total_jump": null,
+   "seconds": 94.36162049999984
+  },
+  {
+   "nc": 64,
+   "ms": 40,
+   "tc": 0.18,
+   "panels": 10366,
+   "cl_alpha": 3.185913093445434,
+   "cl_alpha_total_jump": null,
+   "seconds": 94.09224899999754
+  }
+ ],
+ "note": "small-angle lift slope per rad from the wake strength; flat wake in the plane z = 0"
+}

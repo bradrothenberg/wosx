@@ -1,0 +1,84 @@
+{
+ "key": "V03",
+ "mach": 0.7,
+ "grid": "geo/V03_M0.70_grid_h.npz",
+ "read_out": "edge, 0.16 to 1.0 m",
+ "rows": [
+  {
+   "config": "60000:10:imp",
+   "cache": 60000,
+   "walks": 10,
+   "importance": true,
+   "max_walk": 10000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.12016280007082969,
+    "invert_mesh": 1.6070907999528572,
+    "gpu_init_bvh_shaders": 1.6231918999692425,
+    "wall": 3.3730523999547586
+   },
+   "runs": [
+    {
+     "seconds": 123.44091460003983,
+     "timing": {
+      "eval_points_cpu": 0.0005345999961718917,
+      "gpu_solver_setup": 12.365016700001433,
+      "gpu_boundary_samples": 0.00391709990799427,
+      "gpu_walks": 109.22496640007012,
+      "gpu_splat": 1.8343383999308571,
+      "readback_cpu": 0.0037265000864863396
+     },
+     "lin": 3.544026249545316,
+     "cl0": 0.03490156310828336,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "100, 4141"
+     }
+    },
+    {
+     "seconds": 228.7599937999621,
+     "timing": {
+      "eval_points_cpu": 0.00046950008254498243,
+      "gpu_solver_setup": 9.336398100014776,
+      "gpu_boundary_samples": 0.005199499893933535,
+      "gpu_walks": 215.53445660008583,
+      "gpu_splat": 3.8681396999163553,
+      "readback_cpu": 0.009810700081288815
+     },
+     "lin": 3.538289563625092,
+     "cl0": 0.035431071689751716,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "19, 3345"
+     }
+    },
+    {
+     "seconds": 217.98533880000468,
+     "timing": {
+      "eval_points_cpu": 0.0004556999774649739,
+      "gpu_solver_setup": 25.221719099907205,
+      "gpu_boundary_samples": 0.0061314000049605966,
+      "gpu_walks": 189.2335150000872,
+      "gpu_splat": 3.5102388999657705,
+      "readback_cpu": 0.008146299980580807
+     },
+     "lin": 3.5499675662875294,
+     "cl0": 0.03546563691905702,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 3347"
+     }
+    }
+   ],
+   "lin_per_deg": 0.061856117325536884,
+   "lin_std_per_deg": 0.00010191501330882423,
+   "cl0": 0.03526609057236403,
+   "cl0_std": 0.0003161627631791051,
+   "seconds": 190.0620824000022,
+   "walk_seconds": 171.33097933341438,
+   "setup_seconds": 15.641044633307805,
+   "splat_seconds": 3.0709056666043275,
+   "gpu_shared": false
+  }
+ ]
+}

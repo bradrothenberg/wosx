@@ -1,0 +1,67 @@
+{
+ "key": "V03",
+ "mach": 0.7,
+ "grid": "geo/V03_M0.70_grid.npz",
+ "read_out": "edge, 0.16 to 1.0 m",
+ "rows": [
+  {
+   "config": "15000:4:imp",
+   "cache": 15000,
+   "walks": 4,
+   "importance": true,
+   "max_walk": 10000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.5804840000346303,
+    "invert_mesh": 5.067522799945436,
+    "gpu_init_bvh_shaders": 1.9982267000013962,
+    "wall": 7.670939499977976
+   },
+   "runs": [
+    {
+     "seconds": 61.85914790001698,
+     "timing": {
+      "eval_points_cpu": 0.0005371998995542526,
+      "gpu_solver_setup": 28.236778300022706,
+      "gpu_boundary_samples": 0.002286400063894689,
+      "gpu_walks": 31.09755679999944,
+      "gpu_splat": 2.5098558999598026,
+      "readback_cpu": 0.004243499948643148
+     },
+     "lin": 3.515796461307288,
+     "cl0": 0.017006686118683122,
+     "gpu": {
+      "other_job_running": true,
+      "gpu_util_and_mem_before": "100, 21250"
+     }
+    },
+    {
+     "seconds": 61.90706430003047,
+     "timing": {
+      "eval_points_cpu": 0.0005154999671503901,
+      "gpu_solver_setup": 28.14679399994202,
+      "gpu_boundary_samples": 0.0022959000198170543,
+      "gpu_walks": 31.31818870001007,
+      "gpu_splat": 2.4144964000442997,
+      "readback_cpu": 0.015965099912136793
+     },
+     "lin": 3.55905192320074,
+     "cl0": 0.017374944003988754,
+     "gpu": {
+      "other_job_running": true,
+      "gpu_util_and_mem_before": "100, 21252"
+     }
+    }
+   ],
+   "lin_per_deg": 0.06173969919453344,
+   "lin_std_per_deg": 0.0005338304267460504,
+   "cl0": 0.017190815061335938,
+   "cl0_std": 0.0002603976479250297,
+   "seconds": 61.883106100023724,
+   "walk_seconds": 31.207872750004753,
+   "setup_seconds": 28.191786149982363,
+   "splat_seconds": 2.462176150002051,
+   "gpu_shared": true
+  }
+ ]
+}

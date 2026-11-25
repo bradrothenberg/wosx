@@ -1,0 +1,197 @@
+{
+ "preset": {
+  "shape": [
+   512,
+   256,
+   128
+  ],
+  "gtag": "_hb2",
+  "block": 2,
+  "cache": 15000,
+  "walks": 4,
+  "cap": 2000,
+  "repeat": 6
+ },
+ "variants": {
+  "V01": {
+   "cold_command_seconds": 22.6167791999178,
+   "grid_step_seconds": 13.203919899999164,
+   "grid_inside_seconds": 9.24,
+   "solver_start_seconds": 4.687007699976675,
+   "run_seconds": 4.031166799948551,
+   "run_timing": {
+    "eval_points_cpu": 0.6881507000653073,
+    "gpu_solver_setup": 0.25884339993353933,
+    "gpu_boundary_samples": 0.0008882000111043453,
+    "gpu_walks": 2.6144599999533966,
+    "gpu_splat": 0.4571029000217095,
+    "readback_cpu": 0.0036135000409558415
+   },
+   "warm_run_seconds": 3.9098967333363057,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V02": {
+   "cold_command_seconds": 22.42650590010453,
+   "grid_step_seconds": 13.15710890002083,
+   "grid_inside_seconds": 9.08,
+   "solver_start_seconds": 4.595943999942392,
+   "run_seconds": 3.9342581999953836,
+   "run_timing": {
+    "eval_points_cpu": 0.6437527999514714,
+    "gpu_solver_setup": 0.2677679000189528,
+    "gpu_boundary_samples": 0.0009618999902158976,
+    "gpu_walks": 2.556786400033161,
+    "gpu_splat": 0.453489699983038,
+    "readback_cpu": 0.003586500068195164
+   },
+   "warm_run_seconds": 3.8516464666851484,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V03": {
+   "cold_command_seconds": 22.95856509997975,
+   "grid_step_seconds": 13.590337199973874,
+   "grid_inside_seconds": 9.44,
+   "solver_start_seconds": 4.68005650001578,
+   "run_seconds": 3.886549200047739,
+   "run_timing": {
+    "eval_points_cpu": 0.7297841999679804,
+    "gpu_solver_setup": 0.26492970006074756,
+    "gpu_boundary_samples": 0.0009310999885201454,
+    "gpu_walks": 2.428048499976285,
+    "gpu_splat": 0.4506196000147611,
+    "readback_cpu": 0.003839600016362965
+   },
+   "warm_run_seconds": 3.712965983315371,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V04": {
+   "cold_command_seconds": 21.90204229997471,
+   "grid_step_seconds": 12.599823200027458,
+   "grid_inside_seconds": 8.66,
+   "solver_start_seconds": 4.697005599969998,
+   "run_seconds": 3.3348028999753296,
+   "run_timing": {
+    "eval_points_cpu": 0.0005601000739261508,
+    "gpu_solver_setup": 0.2545161999296397,
+    "gpu_boundary_samples": 0.0008986999746412039,
+    "gpu_walks": 2.619724199990742,
+    "gpu_splat": 0.45016110001597553,
+    "readback_cpu": 0.0027534000109881163
+   },
+   "warm_run_seconds": 3.2354649500145265,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V05": {
+   "cold_command_seconds": 19.4648404000327,
+   "grid_step_seconds": 12.177116099977866,
+   "grid_inside_seconds": 8.52,
+   "solver_start_seconds": 3.1108188999351114,
+   "run_seconds": 3.038886500056833,
+   "run_timing": {
+    "eval_points_cpu": 0.0004230999620631337,
+    "gpu_solver_setup": 0.16562250000424683,
+    "gpu_boundary_samples": 0.000686999992467463,
+    "gpu_walks": 2.428555399994366,
+    "gpu_splat": 0.43532100005540997,
+    "readback_cpu": 0.0027838998939841986
+   },
+   "warm_run_seconds": 3.1625456500138776,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V06": {
+   "cold_command_seconds": 18.03687169996556,
+   "grid_step_seconds": 10.749329599901102,
+   "grid_inside_seconds": 7.42,
+   "solver_start_seconds": 3.099926399998367,
+   "run_seconds": 3.0752699999138713,
+   "run_timing": {
+    "eval_points_cpu": 0.00042779999785125256,
+    "gpu_solver_setup": 0.16570370004046708,
+    "gpu_boundary_samples": 0.0007411999395117164,
+    "gpu_walks": 2.458507900009863,
+    "gpu_splat": 0.4413730000378564,
+    "readback_cpu": 0.002868699957616627
+   },
+   "warm_run_seconds": 3.076349399983883,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V07": {
+   "cold_command_seconds": 20.304246700019576,
+   "grid_step_seconds": 11.789902299991809,
+   "grid_inside_seconds": 8.08,
+   "solver_start_seconds": 4.119376800023019,
+   "run_seconds": 3.1158853999804705,
+   "run_timing": {
+    "eval_points_cpu": 0.0005848000291734934,
+    "gpu_solver_setup": 0.21463139995466918,
+    "gpu_boundary_samples": 0.0007093000458553433,
+    "gpu_walks": 2.448067700024694,
+    "gpu_splat": 0.4426131999352947,
+    "readback_cpu": 0.0029983000131323934
+   },
+   "warm_run_seconds": 3.0432131666651308,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V08": {
+   "cold_command_seconds": 20.037294799927622,
+   "grid_step_seconds": 11.674874400021508,
+   "grid_inside_seconds": 7.96,
+   "solver_start_seconds": 3.9349524000426754,
+   "run_seconds": 3.1394369000336155,
+   "run_timing": {
+    "eval_points_cpu": 0.00048619997687637806,
+    "gpu_solver_setup": 0.21830589999444783,
+    "gpu_boundary_samples": 0.0008808000711724162,
+    "gpu_walks": 2.4643711999524385,
+    "gpu_splat": 0.44646010000724345,
+    "readback_cpu": 0.0027673000004142523
+   },
+   "warm_run_seconds": 3.0509689499934516,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V09": {
+   "cold_command_seconds": 20.802427600021474,
+   "grid_step_seconds": 12.068950699991547,
+   "grid_inside_seconds": 8.36,
+   "solver_start_seconds": 4.176054299925454,
+   "run_seconds": 3.2548788998974487,
+   "run_timing": {
+    "eval_points_cpu": 0.0006136000156402588,
+    "gpu_solver_setup": 0.20939189998898655,
+    "gpu_boundary_samples": 0.0009228999260812998,
+    "gpu_walks": 2.586541400058195,
+    "gpu_splat": 0.4461052999831736,
+    "readback_cpu": 0.003616599948145449
+   },
+   "warm_run_seconds": 3.176118499987448,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  },
+  "V10": {
+   "cold_command_seconds": 20.992045400082134,
+   "grid_step_seconds": 12.231172399944626,
+   "grid_inside_seconds": 8.45,
+   "solver_start_seconds": 4.210082999896258,
+   "run_seconds": 3.2659245999529958,
+   "run_timing": {
+    "eval_points_cpu": 0.0006328000454232097,
+    "gpu_solver_setup": 0.24899249989539385,
+    "gpu_boundary_samples": 0.0007217000238597393,
+    "gpu_walks": 2.5512042000191286,
+    "gpu_splat": 0.45298419997561723,
+    "readback_cpu": 0.00359890004619956
+   },
+   "warm_run_seconds": 3.1280281999885724,
+   "cfd_on_gpu_during_cold_command": false,
+   "cfd_on_gpu_during_repeats": false
+  }
+ }
+}

@@ -1,0 +1,126 @@
+{
+ "key": "W12T12",
+ "mach": 0.0,
+ "walks": 2000,
+ "grid": "geo/W12T12_M0.00_grid.npz",
+ "mesh": "geo/W12T12_h20_q150k.npz",
+ "seconds_mesh": 63.50717930000974,
+ "seconds_implicit": 45.423541600001045,
+ "rows": [
+  {
+   "distance_m": 0.005,
+   "points": 48,
+   "walk_length_mesh": 342.67084407806396,
+   "walk_length_implicit": 2457.358501434326,
+   "walks_counted_mesh": 2000.0,
+   "walks_counted_implicit": 1994.8125,
+   "x_onset": {
+    "ratio": 0.9771384300277446,
+    "rms_mesh": 0.14560502317516902,
+    "rms_diff": 0.012611918806492227
+   },
+   "z_onset": {
+    "ratio": 0.986658919829036,
+    "rms_mesh": 1.5725688249189709,
+    "rms_diff": 0.1304106671138843
+   },
+   "strip_mid": {
+    "ratio": 0.9507009161322773,
+    "rms_mesh": 0.8724018069258496,
+    "rms_diff": 0.22652389251294203
+   }
+  },
+  {
+   "distance_m": 0.02,
+   "points": 48,
+   "walk_length_mesh": 371.38464164733887,
+   "walk_length_implicit": 2759.4743423461914,
+   "walks_counted_mesh": 1999.9583333333333,
+   "walks_counted_implicit": 1994.9583333333333,
+   "x_onset": {
+    "ratio": 0.9863775114965142,
+    "rms_mesh": 0.142587486321715,
+    "rms_diff": 0.010162104589945608
+   },
+   "z_onset": {
+    "ratio": 0.9760975490354261,
+    "rms_mesh": 1.4480334520598641,
+    "rms_diff": 0.10474592972090498
+   },
+   "strip_mid": {
+    "ratio": 0.8652337404633065,
+    "rms_mesh": 0.5779544034474196,
+    "rms_diff": 0.20375332530285994
+   }
+  },
+  {
+   "distance_m": 0.08,
+   "points": 48,
+   "walk_length_mesh": 359.0781132380168,
+   "walk_length_implicit": 2665.0567042032876,
+   "walks_counted_mesh": 2000.0,
+   "walks_counted_implicit": 1994.8333333333333,
+   "x_onset": {
+    "ratio": 0.9874841536861331,
+    "rms_mesh": 0.14140758571637832,
+    "rms_diff": 0.008533363238606855
+   },
+   "z_onset": {
+    "ratio": 1.0066586649134552,
+    "rms_mesh": 1.2591740820586037,
+    "rms_diff": 0.1271968884126582
+   },
+   "strip_mid": {
+    "ratio": 0.8795737349160999,
+    "rms_mesh": 0.8714289917871229,
+    "rms_diff": 0.20984068735244368
+   }
+  },
+  {
+   "distance_m": 0.3,
+   "points": 48,
+   "walk_length_mesh": 350.77461496988934,
+   "walk_length_implicit": 2548.39803314209,
+   "walks_counted_mesh": 2000.0,
+   "walks_counted_implicit": 1994.625,
+   "x_onset": {
+    "ratio": 0.9930557318121042,
+    "rms_mesh": 0.10703618601027465,
+    "rms_diff": 0.011789795691548933
+   },
+   "z_onset": {
+    "ratio": 0.9678758160504282,
+    "rms_mesh": 1.2990583454158071,
+    "rms_diff": 0.11943580463078472
+   },
+   "strip_mid": {
+    "ratio": 0.9375752586994207,
+    "rms_mesh": 0.433193506290451,
+    "rms_diff": 0.1718026231356981
+   }
+  },
+  {
+   "distance_m": 1.0,
+   "points": 48,
+   "walk_length_mesh": 331.66849931081134,
+   "walk_length_implicit": 2441.5624618530273,
+   "walks_counted_mesh": 2000.0,
+   "walks_counted_implicit": 1994.5208333333333,
+   "x_onset": {
+    "ratio": 0.9385045660722605,
+    "rms_mesh": 0.07148705763810005,
+    "rms_diff": 0.013406074254522051
+   },
+   "z_onset": {
+    "ratio": 1.0170647915061626,
+    "rms_mesh": 0.9794690068703439,
+    "rms_diff": 0.10163702655385295
+   },
+   "strip_mid": {
+    "ratio": 0.531397003676078,
+    "rms_mesh": 0.24864017103264446,
+    "rms_diff": 0.17801570410392623
+   }
+  }
+ ]
+}

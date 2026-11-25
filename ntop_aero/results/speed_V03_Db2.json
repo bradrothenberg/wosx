@@ -1,0 +1,194 @@
+{
+ "key": "V03",
+ "mach": 0.7,
+ "grid": "geo/V03_M0.70_grid_hb2.npz",
+ "read_out": "edge, 0.16 to 1.0 m",
+ "rows": [
+  {
+   "config": "15000:10:imp:cap2000",
+   "cache": 15000,
+   "walks": 10,
+   "importance": true,
+   "max_walk": 2000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.11818829993717372,
+    "invert_mesh": 1.5798573000356555,
+    "gpu_init_bvh_shaders": 1.4154132000403479,
+    "wall": 3.1436825999990106
+   },
+   "runs": [
+    {
+     "seconds": 6.427452699979767,
+     "timing": {
+      "eval_points_cpu": 0.0004929000278934836,
+      "gpu_solver_setup": 0.17956019996199757,
+      "gpu_boundary_samples": 0.0007054000161588192,
+      "gpu_walks": 5.791963200084865,
+      "gpu_splat": 0.44369129999540746,
+      "readback_cpu": 0.0034036999568343163
+     },
+     "lin": 3.558134302115927,
+     "cl0": 0.02673324436388799,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2158"
+     }
+    },
+    {
+     "seconds": 6.395603299955837,
+     "timing": {
+      "eval_points_cpu": 0.0005145999602973461,
+      "gpu_solver_setup": 0.13361670006997883,
+      "gpu_boundary_samples": 0.0005982000147923827,
+      "gpu_walks": 5.815807099919766,
+      "gpu_splat": 0.43323309998959303,
+      "readback_cpu": 0.00725860008969903
+     },
+     "lin": 3.5531097156256277,
+     "cl0": 0.028391961138153243,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2160"
+     }
+    },
+    {
+     "seconds": 6.387542699929327,
+     "timing": {
+      "eval_points_cpu": 0.00047309999354183674,
+      "gpu_solver_setup": 0.1313467000145465,
+      "gpu_boundary_samples": 0.00047039997298270464,
+      "gpu_walks": 5.796210699947551,
+      "gpu_splat": 0.44236650003585964,
+      "readback_cpu": 0.00933280005119741
+     },
+     "lin": 3.549636498553757,
+     "cl0": 0.02569644367563324,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2128"
+     }
+    },
+    {
+     "seconds": 6.366085999994539,
+     "timing": {
+      "eval_points_cpu": 0.00048509996850043535,
+      "gpu_solver_setup": 0.13853800005745143,
+      "gpu_boundary_samples": 0.0005366000114008784,
+      "gpu_walks": 5.784383499994874,
+      "gpu_splat": 0.4310075999237597,
+      "readback_cpu": 0.006816900102421641
+     },
+     "lin": 3.5643733841842447,
+     "cl0": 0.027865205400802368,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2128"
+     }
+    }
+   ],
+   "lin_per_deg": 0.06206937937388351,
+   "lin_std_per_deg": 0.00011181175299631509,
+   "cl0": 0.02717171364461921,
+   "cl0_std": 0.0012025821597583133,
+   "seconds": 6.3941711749648675,
+   "walk_seconds": 5.797091124986764,
+   "setup_seconds": 0.14576540002599359,
+   "splat_seconds": 0.43757462498615496,
+   "gpu_shared": false
+  },
+  {
+   "config": "15000:10:imp",
+   "cache": 15000,
+   "walks": 10,
+   "importance": true,
+   "max_walk": 10000,
+   "rr": 0.99,
+   "init": {
+    "setup_cpu": 0.11818829993717372,
+    "invert_mesh": 1.5798573000356555,
+    "gpu_init_bvh_shaders": 1.4154132000403479,
+    "wall": 3.1436825999990106
+   },
+   "runs": [
+    {
+     "seconds": 15.859882299904712,
+     "timing": {
+      "eval_points_cpu": 0.0003899999428540468,
+      "gpu_solver_setup": 0.0983737000497058,
+      "gpu_boundary_samples": 0.0003765999572351575,
+      "gpu_walks": 15.299715999979526,
+      "gpu_splat": 0.44525970006361604,
+      "readback_cpu": 0.009916999959386885
+     },
+     "lin": 3.564596700828321,
+     "cl0": 0.014918840844841222,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2128"
+     }
+    },
+    {
+     "seconds": 16.28571949992329,
+     "timing": {
+      "eval_points_cpu": 0.0004501999355852604,
+      "gpu_solver_setup": 0.11804820003453642,
+      "gpu_boundary_samples": 0.0004392999690026045,
+      "gpu_walks": 15.730581199983135,
+      "gpu_splat": 0.42466930008959025,
+      "readback_cpu": 0.007144199917092919
+     },
+     "lin": 3.5636081896475815,
+     "cl0": 0.023190407821320928,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2127"
+     }
+    },
+    {
+     "seconds": 16.231051499955356,
+     "timing": {
+      "eval_points_cpu": 0.00041009997949004173,
+      "gpu_solver_setup": 0.09538319997955114,
+      "gpu_boundary_samples": 0.0004890999989584088,
+      "gpu_walks": 15.686997600016184,
+      "gpu_splat": 0.4369311999762431,
+      "readback_cpu": 0.006627200054936111
+     },
+     "lin": 3.596432615115603,
+     "cl0": 0.015479685386135094,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2127"
+     }
+    },
+    {
+     "seconds": 16.291585400002077,
+     "timing": {
+      "eval_points_cpu": 0.000368500011973083,
+      "gpu_solver_setup": 0.09697519999463111,
+      "gpu_boundary_samples": 0.00040559994522482157,
+      "gpu_walks": 15.73932000005152,
+      "gpu_splat": 0.44310709997080266,
+      "readback_cpu": 0.007010300061665475
+     },
+     "lin": 3.5198826078403753,
+     "cl0": 0.02125824452586293,
+     "gpu": {
+      "other_job_running": false,
+      "gpu_util_and_mem_before": "0, 2127"
+     }
+    }
+   ],
+   "lin_per_deg": 0.062153444086485626,
+   "lin_std_per_deg": 0.0005487648821454924,
+   "cl0": 0.018711794644540043,
+   "cl0_std": 0.004138252923245163,
+   "seconds": 16.16705967494636,
+   "walk_seconds": 15.614153700007591,
+   "setup_seconds": 0.10219507501460612,
+   "splat_seconds": 0.437491825025063,
+   "gpu_shared": false
+  }
+ ]
+}

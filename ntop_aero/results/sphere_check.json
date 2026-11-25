@@ -1,0 +1,106 @@
+{
+ "radius_m": 5.0,
+ "faces": 81920,
+ "points_per_distance": 400,
+ "runs": [
+  {
+   "cache": 15000,
+   "walks": 10,
+   "seconds": 12.665621799998917,
+   "by_distance": [
+    {
+     "distance_over_radius": 0.01,
+     "rms_error": 15.373172528609281,
+     "median_error": 7.906479035106273,
+     "p95_error": 29.527071133360316
+    },
+    {
+     "distance_over_radius": 0.02,
+     "rms_error": 3.5138952512509793,
+     "median_error": 2.61067972562264,
+     "p95_error": 6.111244403915406
+    },
+    {
+     "distance_over_radius": 0.05,
+     "rms_error": 0.44893013419231287,
+     "median_error": 0.3467442661405455,
+     "p95_error": 0.8237418118390821
+    },
+    {
+     "distance_over_radius": 0.1,
+     "rms_error": 0.09377679477389245,
+     "median_error": 0.07259053518002409,
+     "p95_error": 0.1748527603115569
+    },
+    {
+     "distance_over_radius": 0.2,
+     "rms_error": 0.0192767582133962,
+     "median_error": 0.01597259152432795,
+     "p95_error": 0.03270430814766849
+    },
+    {
+     "distance_over_radius": 0.5,
+     "rms_error": 0.0023121381896167386,
+     "median_error": 0.0020245110124114014,
+     "p95_error": 0.003716122728615896
+    },
+    {
+     "distance_over_radius": 1.0,
+     "rms_error": 0.00042921813864998384,
+     "median_error": 0.00034564060903532416,
+     "p95_error": 0.0007750298514715143
+    }
+   ]
+  },
+  {
+   "cache": 60000,
+   "walks": 10,
+   "seconds": 22.63478349999059,
+   "by_distance": [
+    {
+     "distance_over_radius": 0.01,
+     "rms_error": 7.5482711445494575,
+     "median_error": 5.006707995534889,
+     "p95_error": 13.578528310545941
+    },
+    {
+     "distance_over_radius": 0.02,
+     "rms_error": 1.5337830084546258,
+     "median_error": 1.1215976310520077,
+     "p95_error": 2.8412395975828453
+    },
+    {
+     "distance_over_radius": 0.05,
+     "rms_error": 0.19286809491844775,
+     "median_error": 0.15344231177225603,
+     "p95_error": 0.3551283857612031
+    },
+    {
+     "distance_over_radius": 0.1,
+     "rms_error": 0.041657253117778285,
+     "median_error": 0.034520534266896816,
+     "p95_error": 0.06942756989288364
+    },
+    {
+     "distance_over_radius": 0.2,
+     "rms_error": 0.009785852395685793,
+     "median_error": 0.008699613216467953,
+     "p95_error": 0.015858492924330305
+    },
+    {
+     "distance_over_radius": 0.5,
+     "rms_error": 0.0012626620933604553,
+     "median_error": 0.0010763528228560735,
+     "p95_error": 0.002207706099394246
+    },
+    {
+     "distance_over_radius": 1.0,
+     "rms_error": 0.0002532753655872214,
+     "median_error": 0.00021403873475668627,
+     "p95_error": 0.0004248927125767272
+    }
+   ]
+  }
+ ],
+ "note": "error = |computed - exact| perturbation velocity as a fraction of flight speed"
+}

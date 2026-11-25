@@ -1,0 +1,32 @@
+{
+ "V03": {
+  "sections_seconds": 13.578465100028552,
+  "sections_same_as_before": true,
+  "cfd_on_gpu": false,
+  "solve": {
+   "24x16": 2.947065299958922,
+   "32x24": 8.853529599960893,
+   "48x32": 33.09801159997005
+  }
+ },
+ "V01": {
+  "sections_seconds": 17.250213999999687,
+  "sections_same_as_before": false,
+  "cfd_on_gpu": false,
+  "solve": {
+   "24x16": 3.0104269000003114,
+   "32x24": 10.480973500059918,
+   "48x32": 38.692332300008275
+  }
+ },
+ "V06": {
+  "sections_seconds": 15.601877999957651,
+  "sections_same_as_before": true,
+  "cfd_on_gpu": false,
+  "solve": {
+   "24x16": 2.9164320999989286,
+   "32x24": 9.581831499934196,
+   "48x32": 36.88479469995946
+  }
+ }
+}

@@ -1,0 +1,12 @@
+{
+ "key": "V03",
+ "source": "results/final_V03_M0.7_c240i.json (4 runs, 23 Nov 2026): wall from the field, 1024 x 512 x 256 grid, 240,000 start points x 10 walks, uniform start points, no walk cut, no shader cache",
+ "note": "cold_command_seconds is the sum of the measured steps (grid 218.85 + solver start 3.7 + one run 183.9); the start of the Python process of the grid step was not timed then",
+ "grid_seconds": 218.85,
+ "solver_start_seconds": 3.7,
+ "run_seconds": 183.9,
+ "walk_seconds": 158.5,
+ "solver_setup_seconds": 18.8,
+ "cold_command_seconds": 406.5,
+ "warm_run_seconds": 183.9
+}

@@ -1,0 +1,320 @@
+{
+ "alpha_deg": 4.0,
+ "samples": 60000,
+ "compared_panel_points": 2176,
+ "rows": [
+  {
+   "name": "raw, one run",
+   "kind": "raw",
+   "judge_loss": 0.015488220507861281,
+   "cp_rms": 0.6777219909397145,
+   "cp_median_abs": 0.30721290616800323,
+   "cp_p90_abs": 0.9189647612965529,
+   "seconds": 0.0
+  },
+  {
+   "name": "raw, mean of the two runs",
+   "kind": "two runs (the judge is not independent)",
+   "judge_loss": 0.007186069697430613,
+   "cp_rms": 0.4295198907496069,
+   "cp_median_abs": 0.2244564106593928,
+   "cp_p90_abs": 0.6897480079098598,
+   "seconds": 0.0
+  },
+  {
+   "name": "mean of 8 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.012278767067262832,
+   "cp_rms": 0.3514240341073448,
+   "cp_median_abs": 0.16313711652183854,
+   "cp_p90_abs": 0.5111092527699809,
+   "seconds": 0.10980860004201531
+  },
+  {
+   "name": "median of 8 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.012540923049297114,
+   "cp_rms": 0.3742032664455644,
+   "cp_median_abs": 0.17878440188667988,
+   "cp_p90_abs": 0.5833530661527992,
+   "seconds": 0.15472870005760342
+  },
+  {
+   "name": "mean of 16 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.011416955937949017,
+   "cp_rms": 0.2724214383250808,
+   "cp_median_abs": 0.12511173993272906,
+   "cp_p90_abs": 0.37332895061214766,
+   "seconds": 0.17133090004790574
+  },
+  {
+   "name": "median of 16 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.011553684714250317,
+   "cp_rms": 0.29014932427244233,
+   "cp_median_abs": 0.1360190606081455,
+   "cp_p90_abs": 0.42618738422051083,
+   "seconds": 0.25749830005224794
+  },
+  {
+   "name": "mean of 32 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.010957730264416267,
+   "cp_rms": 0.2335206691300784,
+   "cp_median_abs": 0.09159550222076807,
+   "cp_p90_abs": 0.2820596319190421,
+   "seconds": 0.4168420999776572
+  },
+  {
+   "name": "median of 32 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.011039359340047154,
+   "cp_rms": 0.2417671164551492,
+   "cp_median_abs": 0.10014514359239213,
+   "cp_p90_abs": 0.3104322888304248,
+   "seconds": 0.6066691000014544
+  },
+  {
+   "name": "mean of 64 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.01075755195000704,
+   "cp_rms": 0.22298901278703898,
+   "cp_median_abs": 0.06423643886928926,
+   "cp_p90_abs": 0.20633589503676364,
+   "seconds": 0.663494799984619
+  },
+  {
+   "name": "median of 64 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.010802811912726897,
+   "cp_rms": 0.22846592076412084,
+   "cp_median_abs": 0.07263111630699304,
+   "cp_p90_abs": 0.23804154496221208,
+   "seconds": 1.0164761999621987
+  },
+  {
+   "name": "mean of 128 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.010669295343069972,
+   "cp_rms": 0.21537019522928777,
+   "cp_median_abs": 0.04900015586136591,
+   "cp_p90_abs": 0.18787909700998429,
+   "seconds": 1.4302054999861866
+  },
+  {
+   "name": "median of 128 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.010694616494735633,
+   "cp_rms": 0.21358964338421096,
+   "cp_median_abs": 0.050737158569876095,
+   "cp_p90_abs": 0.18341798191146053,
+   "seconds": 2.0497239000396803
+  },
+  {
+   "name": "mean of 256 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.010637392040985566,
+   "cp_rms": 0.2146747837776367,
+   "cp_median_abs": 0.0381358365200698,
+   "cp_p90_abs": 0.18166292432256104,
+   "seconds": 2.7557502000126988
+  },
+  {
+   "name": "median of 256 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.0106461263615621,
+   "cp_rms": 0.21160499740326824,
+   "cp_median_abs": 0.0383656439245883,
+   "cp_p90_abs": 0.187724261387118,
+   "seconds": 4.018566400045529
+  },
+  {
+   "name": "mean of 512 neighbours",
+   "kind": "local mean",
+   "judge_loss": 0.010636594783527306,
+   "cp_rms": 0.2137899796853344,
+   "cp_median_abs": 0.03328541977545035,
+   "cp_p90_abs": 0.19410306438390623,
+   "seconds": 5.341749400016852
+  },
+  {
+   "name": "median of 512 neighbours",
+   "kind": "local median",
+   "judge_loss": 0.010640402809904345,
+   "cp_rms": 0.20977185472468066,
+   "cp_median_abs": 0.03254125632482624,
+   "cp_p90_abs": 0.19103702353703256,
+   "seconds": 7.661605100031011
+  },
+  {
+   "name": "network, 0 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010627868599361939,
+   "cp_rms": 0.21395623102221759,
+   "cp_median_abs": 0.030493366872176075,
+   "cp_p90_abs": 0.1861368787523886,
+   "seconds": 9.314171600039117,
+   "nf": 0,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 0 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.010607229510754304,
+   "cp_rms": 0.21786598976427696,
+   "cp_median_abs": 0.02645369121250485,
+   "cp_p90_abs": 0.1823905939426752,
+   "seconds": 6.687650399981067,
+   "nf": 0,
+   "width": 256,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 1 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010605325201334547,
+   "cp_rms": 0.21921309991785615,
+   "cp_median_abs": 0.026656754992186893,
+   "cp_p90_abs": 0.16996763938720005,
+   "seconds": 4.563992899958976,
+   "nf": 1,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 1 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.010595583912286738,
+   "cp_rms": 0.21250589013708382,
+   "cp_median_abs": 0.024470437548924195,
+   "cp_p90_abs": 0.15379661376520704,
+   "seconds": 6.651440800051205,
+   "nf": 1,
+   "width": 256,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 2 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010600532686577034,
+   "cp_rms": 0.21408881947032407,
+   "cp_median_abs": 0.02760731921318249,
+   "cp_p90_abs": 0.1781869966675504,
+   "seconds": 4.998199000023305,
+   "nf": 2,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 2 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.010599711561607064,
+   "cp_rms": 0.2061845678882693,
+   "cp_median_abs": 0.02887191241438658,
+   "cp_p90_abs": 0.1540823509990762,
+   "seconds": 6.7027682000771165,
+   "nf": 2,
+   "width": 256,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 3 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010613977611253801,
+   "cp_rms": 0.21627663765581154,
+   "cp_median_abs": 0.02834949684847876,
+   "cp_p90_abs": 0.17114601811258412,
+   "seconds": 5.743490100023337,
+   "nf": 3,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 3 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.010608616848278052,
+   "cp_rms": 0.2176241148390972,
+   "cp_median_abs": 0.030519115304296296,
+   "cp_p90_abs": 0.1750193308283906,
+   "seconds": 6.654576499946415,
+   "nf": 3,
+   "width": 256,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 4 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010642268230775458,
+   "cp_rms": 0.2108815633209559,
+   "cp_median_abs": 0.03854919173158744,
+   "cp_p90_abs": 0.1631996983012296,
+   "seconds": 4.755801500054076,
+   "nf": 4,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 4 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.010635401457800264,
+   "cp_rms": 0.2114020644323182,
+   "cp_median_abs": 0.03942846477528811,
+   "cp_p90_abs": 0.1697743917623869,
+   "seconds": 6.769127899897285,
+   "nf": 4,
+   "width": 256,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 6 bands, width 64",
+   "kind": "network",
+   "judge_loss": 0.010812617960981732,
+   "cp_rms": 0.21220508276307878,
+   "cp_median_abs": 0.06855818655691548,
+   "cp_p90_abs": 0.22407367429525815,
+   "seconds": 3.8386934999143705,
+   "nf": 6,
+   "width": 64,
+   "device": "cuda"
+  },
+  {
+   "name": "network, 6 bands, width 256",
+   "kind": "network",
+   "judge_loss": 0.012023392603899462,
+   "cp_rms": 0.31600267644727126,
+   "cp_median_abs": 0.16247129144552286,
+   "cp_p90_abs": 0.49346186899932826,
+   "seconds": 6.971799599938095,
+   "nf": 6,
+   "width": 256,
+   "device": "cuda"
+  }
+ ],
+ "chosen": {
+  "local mean": "mean of 512 neighbours",
+  "local median": "median of 512 neighbours",
+  "network": "network, 1 bands, width 256"
+ },
+ "forces": {
+  "raw, one run": {
+   "cl_pressure": 0.13285999325903847,
+   "cd_pressure": 0.004464099901506322
+  },
+  "mean of 512 neighbours": {
+   "cl_pressure": 0.21412511477694196,
+   "cd_pressure": 0.012214306058260566
+  },
+  "network, 1 bands, width 256": {
+   "cl_pressure": 0.22480606799367892,
+   "cd_pressure": 0.012673524711731585
+  }
+ },
+ "forces_reference": {
+  "panel_cl_pressure": 0.24082794266722032,
+  "panel_cl_wake": 0.24437777664267013,
+  "panel_cd_pressure": 0.004043609185562496
+ },
+ "note": "judge_loss: Huber loss (0.05) of the velocity against the second WoSX run at the 60,000 sample points; Cp errors against the panel code, 5 to 95 % chord"
+}
